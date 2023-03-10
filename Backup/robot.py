@@ -1,77 +1,61 @@
-    # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
-Created on Mon Feb  6 11:45:50 2023
+Created on Fri Mar 10 13:53:05 2023
 
-@author: Bijo Sebastian
+@author: Hruthik V S
 """
-
-import search
-import copy
 import maze_maps
+from matplotlib import pyplot as plt
+import copy
 import matplotlib
-import matplotlib.pyplot as plt
 
-class Maze:
-  """
-  This class outlines the structure of the maze problem
-  """
+
+class Robot():
+    
+    
+    four_neighbor_actions = {'stay':[0, 0, 1],'up':[-1, 0, 1], 'down':[1, 0, 1], 'left': [0, -1, 1], 'right': [0, 1, 1]}
   
-  maze_map = []# To store map data, start and goal points
-  
-  # Legal moves
-  # [delta_x, delta_y, description]
-  #TODO
-  four_neighbor_actions = {'stay':[0, 0, 1],'up':[-1, 0, 1], 'down':[1, 0, 1], 'left': [0, -1, 1], 'right': [0, 1, 1]}
-  
-  #Setup plot
-  map_plot_copy = []
-  plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
-  fig,ax = plt.subplots(1)
-  plt.axis('equal')
-  
-  
-  def plot_map(self):
+    #Setup plot
+    map_plot_copy = []
+    plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
+    fig,ax = plt.subplots(1)
+    plt.axis('equal')
+     
+    def __init__(self,mapid,start,goal):
+        self.maze_map = maze_maps.maps_dictionary[mapid]
+        self.start = start
+        self.goal = goal 
+        self.map_plot_copy = copy.deepcopy(self.maze_map.map_data)
+        #self.plot_map()
+        
+        
+    def plot_map(self):
       
       
-        """ Plot """
+        """ Plot """ 
         start = self.getStartState()
         goal = self.getGoalState()
         self.map_plot_copy[start[0]][start[1]] = maze_maps.start_id
         self.map_plot_copy[goal[0]][goal[1]] = maze_maps.goal_id
-       
+         
         plt.imshow(self.map_plot_copy, cmap=plt.cm.tab20c, norm=self.plot_colormap_norm)
         #plt.show()
-      
-  # default constructor
-  #TODO Changes
-  def __init__(self, id, start, goal):
-          """
-          Sets the map as defined in file maze_maps
-          """
-          #Set up the map to be used
-          self.maze_map = maze_maps.maps_dictionary[id]
-          self.map_plot_copy = copy.deepcopy(self.maze_map.map_data)
-          self.start = start
-          self.goal = goal
-          
-          self.plot_map()
-          return 
-      
-  def getStartState(self):
+        
+    def getStartState(self):
          """
          Returns the start state for the search problem 
          """
          start_state = self.start
          return start_state
  
-  def getGoalState(self):
+    def getGoalState(self):
          """
          Returns the start state for the search problem 
          """
          goal_state =  self.goal
          return goal_state
-        
-  def isGoalState(self, state):
+     
+    def isGoalState(self, state):
          """
            state: Search state
         
@@ -82,7 +66,7 @@ class Maze:
          else:
              return False
 
-  def getSuccessors(self, state):
+    def getSuccessors(self, state):
          """
            state: Search state
          
@@ -127,29 +111,26 @@ class Maze:
          #Plot the changes
          self.plot_map()
          return successors
-
-if __name__ == '__main__':
-    
-        current_maze = Maze(1)
-        path = search.breadthFirstSearch(current_maze)
-        if path:
-            print('Found a path of %d moves: %s' % (len(path), str(path))) 
-            #Display solution
-            row,col,time = current_maze.getStartState() 
-            for action in path:
-                del_x, del_y, del_t = current_maze.four_neighbor_actions.get(action)
-                newrow = row + del_x
-                newcol = col + del_y
-                newtime = time + del_t
-                #Update changes on the plot copy
-                current_maze.map_plot_copy[newrow][newcol] = 10
-                row = newrow
-                col = newcol
-            #Plot the solution
-            current_maze.plot_map()
-            
-        else:
-            print("Could not find a path")
+     
         
-    
- 
+    # def getPath():
+        
+    #     path = search.breadthFirstSearch(current_maze)
+    #     if path:
+    #         print('Found a path of %d moves: %s' % (len(path), str(path))) 
+    #         #Display solution
+    #         row,col,time = current_maze.getStartState() 
+    #         for action in path:
+    #             del_x, del_y, del_t = current_maze.four_neighbor_actions.get(action)
+    #             newrow = row + del_x
+    #             newcol = col + del_y
+    #             newtime = time + del_t
+    #             #Update changes on the plot copy
+    #             current_maze.map_plot_copy[newrow][newcol] = 10
+    #             row = newrow
+    #             col = newcol
+    #         #Plot the solution
+    #         current_maze.plot_map()
+            
+    #     else:
+    #         print("Could not find a path")

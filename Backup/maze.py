@@ -38,37 +38,33 @@ class Maze:
         goal = self.getGoalState()
         self.map_plot_copy[start[0]][start[1]] = maze_maps.start_id
         self.map_plot_copy[goal[0]][goal[1]] = maze_maps.goal_id
-       
+        print(self.map_plot_copy)
         plt.imshow(self.map_plot_copy, cmap=plt.cm.tab20c, norm=self.plot_colormap_norm)
         #plt.show()
       
   # default constructor
-  #TODO Changes
-  def __init__(self, id, start, goal):
+  def __init__(self, id):
           """
           Sets the map as defined in file maze_maps
           """
           #Set up the map to be used
           self.maze_map = maze_maps.maps_dictionary[id]
           self.map_plot_copy = copy.deepcopy(self.maze_map.map_data)
-          self.start = start
-          self.goal = goal
-          
           self.plot_map()
-          return 
-      
+          return
+     
   def getStartState(self):
          """
          Returns the start state for the search problem 
          """
-         start_state = self.start
+         start_state = self.maze_map.start
          return start_state
  
   def getGoalState(self):
          """
          Returns the start state for the search problem 
          """
-         goal_state =  self.goal
+         goal_state =  self.maze_map.goal
          return goal_state
         
   def isGoalState(self, state):

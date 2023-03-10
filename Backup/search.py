@@ -86,10 +86,10 @@ def breadthFirstSearch(problem):
     
     fringe.append(problem.getStartState())
     
-    # print(fringe) 
+    print(fringe) 
     fringe[0].append(0)
-    # print(problem.getSuccessors(fringe[0]))
-    # print(problem.getGoalState())
+    print(problem.getSuccessors(fringe[0]))
+    print(problem.getGoalState())
     i=0
     fin = 0
     while fringe and not problem.isGoalState(fringe[0][:2]):
