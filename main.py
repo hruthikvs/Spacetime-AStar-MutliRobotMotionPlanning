@@ -23,3 +23,20 @@ print(r2.getPath())
 
 
 
+#Pseudo Code
+
+while (t<T):
+    
+    path1[t]
+    path2[t]
+    
+    if r1 and r2 in vicinity ie |path1[t]-path2[t]|<=root2:
+        new_path = r2.replan(path[t],goal2, r1spacetime)
+        
+        {inside r2 function} = if not rspacetime[i][j][t]: then append node
+        
+        path1[t+1:] = path1[t+1:]
+        path2[t+1:] = new_path
+
+
+
