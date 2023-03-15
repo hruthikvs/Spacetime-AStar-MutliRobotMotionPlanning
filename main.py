@@ -15,8 +15,8 @@ import numpy as np
 import time
 import copy
 
-r1 = Robot(mapid=1,start=[14,1],goal=[13,17])
-r2 = Robot(mapid=1,start=[14,17],goal=[13,1])
+r1 = Robot(robotid = 1,mapid=1,start=[14,1],goal=[8,8])
+r2 = Robot(robotid = 2,mapid=1,start=[14,15],goal=[8,8])
 # r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
 
 print('-----Plotting------')
@@ -36,8 +36,8 @@ plt.show()
 
 #r2.plot_map()
 r1.getPath() 
+r2.getPath(r1.path_set)
 
-print('PATH',r2.getPath(r1.path_set))
 path1 = r1.pathSpacetime
 path2 = r2.pathSpacetime
 print('SpaceTime', path2)
@@ -53,10 +53,10 @@ t = 1
 
 T= 20
 while (t<T):
-    print('Robot 1 :',path1[t],t)
-    print('Robot 2:',path2[t],t)
+    print('Robot 1 :',path1[t][:2],'t=',t)
+    print('Robot 2:',path2[t][:2])
     
-    print(path1,path2) 
+    
      
     if np.linalg.norm(np.array(path1[t])-np.array(path2[t]))<=2.0:
         
@@ -75,10 +75,10 @@ while (t<T):
         path1[t+1:] = new_path1[t+1:]
         path2[t+1:] = new_path2[t+1:]
         
-    time.sleep(0.41 )
+    time.sleep(0.4 )
     
     '''Maps plotting'''
-    map_plot_copy[path1[t][0]][path1[t][1]] = 5
+    map_plot_copy[path1[t][0]][path1[t][1]] = 13
     map_plot_copy[path2[t][0]][path2[t][1]] = 10
     plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
     plt.imshow(map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
