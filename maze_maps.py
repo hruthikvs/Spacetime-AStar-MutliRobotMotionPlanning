@@ -51,7 +51,7 @@ map_1.map_data = [
 map_1.start = [14, 1]
 map_1.goal = [1, 2]
 
-print(map_1.goal)
+
 map_2 = Maps()
 map_2.map_data = [
      [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16],

@@ -30,7 +30,9 @@ class Robot():
         self.map_plot_copy = copy.deepcopy(self.maze_map.map_data)
         #to store path of robot after generation
         self.path =[]
-        self.current_maze = Maze(self.mapid,self.start,self.goal)
+        
+        self.pathSpacetime = []
+        self.path_set = set()
         #self.plot_map()
         
         
@@ -76,28 +78,38 @@ class Robot():
          cost of expanding to that successor
          """
          
-         return self.current_maze.getSuccessors(state)
+         return self.current_maze.getSuccessors(state, self.occupied_path_set)
      
+    
         
-    def getPath(self):
+        
+    def getPath(self, occupied_path_set=set()):
+        #setting occupied path from previous robots
         
         
-        self.path = search.breadthFirstSearch(self.current_maze)
+        current_maze =  Maze(self.mapid,self.start,self.goal, occupied_path_set)
+        self.path = search.breadthFirstSearch(current_maze)
         if self.path:
             print('Found a path of %d moves: %s' % (len(self.path), str(self.path))) 
             #Display solution
-            row,col,time = self.current_maze.getStartState() 
+            row,col,time =  current_maze.getStartState() 
+            self.pathSpacetime.append((row,col,time))
             for action in self.path:
-                del_x, del_y, del_t = self.current_maze.four_neighbor_actions.get(action)
+                del_x, del_y, del_t = current_maze.four_neighbor_actions.get(action)
                 newrow = row + del_x
                 newcol = col + del_y
                 newtime = time + del_t
                 #Update changes on the plot copy
-                self.current_maze.map_plot_copy[newrow][newcol] = 10
+                current_maze.map_plot_copy[newrow][newcol] = 10
                 row = newrow
                 col = newcol
+                time = newtime
+                
+                self.pathSpacetime.append((row,col,time))
+            
+            self.path_set = set(self.pathSpacetime)
             #Plot the solution
-            self.current_maze.plot_map()
+            current_maze.plot_map()
             return self.path
         else:
             print("Could not find a path")

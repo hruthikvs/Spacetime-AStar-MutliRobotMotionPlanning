@@ -5,38 +5,56 @@ Created on Fri Mar 10 13:55:37 2023
 @author: Hruthik V S
 """
 
-
-
-#NOTE: Tune value of cose for Wait and proceed
-
 import search
 from robot import Robot
 import maze_maps
 
+import numpy as np
+import time
 
-r1 = Robot(mapid=1,start=[14,1],goal=[1,2])
-r2 = Robot(mapid=1,start=[14,10],goal=[1,5])
+r1 = Robot(mapid=1,start=[14,1],goal=[13,17])
+r2 = Robot(mapid=1,start=[14,17],goal=[13,1])
+# r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
 
 #r2.plot_map()
+r1.getPath() 
 
-print(r2.getPath())
+print('PATH',r2.getPath(r1.path_set))
+path1 = r1.pathSpacetime
+path2 = r2.pathSpacetime
+print('SpaceTime', path2)
+# set_tot = r1.path_set.union(r2.path_set)
+# r3.getPath(set_tot)
 
 
 
-#Pseudo Code
+# # #Pseudo Code
+t = 1
 
+T= 10
 while (t<T):
-    
-    path1[t]
-    path2[t]
-    
-    if r1 and r2 in vicinity ie |path1[t]-path2[t]|<=root2:
-        new_path = r2.replan(path[t],goal2, r1spacetime)
+    print('Robot 1 :',path1[t])
+    print('Robot 2:',path2[t])
+     
+    if np.linalg.norm(np.array(path1[t])-np.array(path2[t]))<=2.0:
         
-        {inside r2 function} = if not rspacetime[i][j][t]: then append node
+        print('------Robot reached Closeby--------')
         
-        path1[t+1:] = path1[t+1:]
-        path2[t+1:] = new_path
+        #update start of robots
+        r1.start = list(path1[t][:2])
+        r2.start = list(path2[t][:2])
+        
+        r1.getPath()
+        r2.getPath(r1.path_set)
+        
+        new_path1 = r1.pathSpacetime
+        new_path2 = r2.pathSpacetime
+        
+        path1[t+1:] = new_path1
+        path2[t+1:] = new_path2
+        
+    time.sleep(1)
+    t+=1
 
 
 

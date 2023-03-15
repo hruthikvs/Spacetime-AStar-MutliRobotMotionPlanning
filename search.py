@@ -93,7 +93,7 @@ def breadthFirstSearch(problem):
     i=0
     fin = 0
     while fringe and not problem.isGoalState(fringe[0][:2]):
-        print(fringe)
+        # print(fringe)
         curr = fringe.pop(0)
          
         close.append(curr) 
@@ -124,7 +124,8 @@ def breadthFirstSearch(problem):
         
         node = parent[node][0]
         i+=1 
-    print('Nodes:',[i for i in reversed(res_2)])   
+    
+    print('Nodes:',[x for x,_ in reversed(res_2)])   
     RES = [i for i in reversed(res)]
     
     xline = [x[0] for x,_ in  reversed(res_2)]

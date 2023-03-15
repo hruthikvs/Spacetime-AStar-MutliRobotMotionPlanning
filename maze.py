@@ -40,11 +40,11 @@ class Maze:
         self.map_plot_copy[goal[0]][goal[1]] = maze_maps.goal_id
        
         plt.imshow(self.map_plot_copy, cmap=plt.cm.tab20c, norm=self.plot_colormap_norm)
-        #plt.show()
+        plt.show()
       
   # default constructor
   #TODO Changes
-  def __init__(self, id, start, goal):
+  def __init__(self, id, start, goal, occupied_path_set =set()):
           """
           Sets the map as defined in file maze_maps
           """
@@ -53,7 +53,7 @@ class Maze:
           self.map_plot_copy = copy.deepcopy(self.maze_map.map_data)
           self.start = start
           self.goal = goal
-          
+          self.occupied_path_set = occupied_path_set
           self.plot_map()
           return 
       
@@ -109,7 +109,8 @@ class Maze:
              new_action = action
              
              # Check for obstacle 
-             if self.maze_map.map_data[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id:
+             if (self.maze_map.map_data[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id or 
+             tuple(new_successor) in self.occupied_path_set):
                  continue
               
              #Update changes on the plot copy
@@ -125,7 +126,7 @@ class Maze:
              successors.append([new_successor, new_action, new_cost])
              
          #Plot the changes
-         self.plot_map()
+         #self.plot_map()
          return successors
 
 if __name__ == '__main__':
@@ -145,6 +146,9 @@ if __name__ == '__main__':
                 current_maze.map_plot_copy[newrow][newcol] = 10
                 row = newrow
                 col = newcol
+                time = newtime
+                
+                
             #Plot the solution
             current_maze.plot_map()
             
