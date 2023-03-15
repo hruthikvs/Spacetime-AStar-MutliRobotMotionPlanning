@@ -126,7 +126,7 @@ def breadthFirstSearch(problem):
         node = parent[node][0]
         i+=1 
     
-    #print('Nodes:',[x for x,_ in reversed(res_2)])   
+   # print('Nodes:',[x for x,_ in reversed(res_2)])   
     RES = [i for i in reversed(res)]
     
     xline = [x[0] for x,_ in  reversed(res_2)]

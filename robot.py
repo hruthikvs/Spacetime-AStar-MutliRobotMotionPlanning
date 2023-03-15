@@ -133,6 +133,9 @@ class Robot():
         
         current_maze =  Robot(self.robotid, self.mapid, self.start, self.goal, occupied_path_set)
         self.path = search.breadthFirstSearch(current_maze)
+        
+        self.pathSpacetime = []
+        
         if self.path:
             print('Robot %d: Found a path of %d moves: %s' % (self.robotid,len(self.path), str(self.path))) 
             #Display solution

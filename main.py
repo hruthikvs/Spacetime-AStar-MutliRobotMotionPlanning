@@ -15,8 +15,8 @@ import numpy as np
 import time
 import copy
 
-r1 = Robot(robotid = 1,mapid=1,start=[14,1],goal=[8,8])
-r2 = Robot(robotid = 2,mapid=1,start=[14,15],goal=[8,8])
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,8])
 # r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
 
 print('-----Plotting------')
@@ -36,7 +36,7 @@ plt.show()
 
 #r2.plot_map()
 r1.getPath() 
-r2.getPath(r1.path_set)
+r2.getPath()
 
 path1 = r1.pathSpacetime
 path2 = r2.pathSpacetime
@@ -63,6 +63,7 @@ while (t<T):
         print('------Robot reached Closeby--------')
         
         #update start of robots
+        
         r1.start = list(path1[t][:2])
         r2.start = list(path2[t][:2])
         
@@ -71,15 +72,16 @@ while (t<T):
         
         new_path1 = r1.pathSpacetime
         new_path2 = r2.pathSpacetime
+        print('Spacetime',new_path1)
+        path1[t+1:] = new_path1[1:]
+        path2[t+1:] = new_path2[1:]
         
-        path1[t+1:] = new_path1[t+1:]
-        path2[t+1:] = new_path2[t+1:]
-        
-    time.sleep(0.4 )
+    time.sleep(1 )
     
     '''Maps plotting'''
     map_plot_copy[path1[t][0]][path1[t][1]] = 13
     map_plot_copy[path2[t][0]][path2[t][1]] = 10
+     
     plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
     plt.imshow(map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
     plt.show()
