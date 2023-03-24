@@ -53,6 +53,7 @@ r1.t = 0
 r2.t = 0
 t=0
 T= 20
+
 while not (r1.goal_reached and r2.goal_reached):
     
     print('Robot 1 :',path1[r1.t][:2],'t=',r1.t if r1.t>r2.t else r2.t)
@@ -66,19 +67,23 @@ while not (r1.goal_reached and r2.goal_reached):
         
         #update start of robots
         
+            
         r1.start = list(path1[r1.t][:2])
         r2.start = list(path2[r2.t][:2])
         
         r1.getPath()
+        print('Spacetime1',r1.path_set)
+        
         r2.getPath(r1.path_set)
         
         new_path1 = r1.pathSpacetime
         new_path2 = r2.pathSpacetime
-        print('Spacetime',new_path1)
+        
+        print('Spacetime2',new_path2)
         path1[r1.t+1:] = new_path1[1:]
         path2[r2.t+1:] = new_path2[1:]
         
-    time.sleep(1 )
+    time.sleep(0.3 )
     
     '''Maps plotting'''
     map_plot_copy[path1[r1.t][0]][path1[r1.t][1]] = 13

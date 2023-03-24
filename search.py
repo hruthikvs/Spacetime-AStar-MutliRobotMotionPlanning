@@ -81,6 +81,9 @@ def breadthFirstSearch(problem):
     Strategy: Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
+    
+    
+    
     fringe = []
     close = []
     parent = {}
@@ -133,7 +136,9 @@ def breadthFirstSearch(problem):
     yline = [x[1] for x,_ in  reversed(res_2)]
     zline = [x[2] for x,_ in  reversed(res_2)]
     
-   
+    
+    
+    
     #TODO
     # ax = plt.axes(projection='3d')
     # ax.plot3D(xline, yline, zline, 'red' , linewidth=10)

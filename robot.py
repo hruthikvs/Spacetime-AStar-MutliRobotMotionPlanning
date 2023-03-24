@@ -142,6 +142,7 @@ class Robot():
             print('Robot %d: Found a path of %d moves: %s' % (self.robotid,len(self.path), str(self.path))) 
             #Display solution
             row,col,time =  current_maze.getStartState() 
+            
             self.pathSpacetime.append((row,col,time))
             for action in self.path:
                 del_x, del_y, del_t = current_maze.four_neighbor_actions.get(action)
@@ -156,11 +157,14 @@ class Robot():
                 
                 self.pathSpacetime.append((row,col,time))
             
-            self.path_set = set(self.pathSpacetime)
+            
             
             #Plot the solution
             # current_maze.plot_map()
             
             return self.path
         else:
+            
             print("Could not find a path")
+            
+        self.path_set = set(self.pathSpacetime)
