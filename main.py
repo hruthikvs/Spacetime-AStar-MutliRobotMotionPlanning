@@ -23,9 +23,9 @@ import copy
 r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
 r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
 
-#Case 3 : Rnadom Location
-r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
-r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+# #Case 3 : Rnadom Location
+# r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
+# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
 
 
 print('-----Plotting------')
@@ -66,6 +66,11 @@ T= 20
 replan_flag = 0
 while not (r1.goal_reached and r2.goal_reached):
     
+    if not r1.goal_reached:
+        r1.t = t
+    if not r2.goal_reached:
+        r2.t = t
+        
     if r1.isGoalState(list(path1[r1.t][:2])) and not r1.goal_reached:
         r1.goal_reached = True
         replan_flag = 1
@@ -82,10 +87,7 @@ while not (r1.goal_reached and r2.goal_reached):
         r2.maze_map.map_data[r2.getGoalState()[0]][r2.getGoalState()[1]] = 16
         print('-----Robot2 Goal Reached------')
     
-    if not r1.goal_reached:
-        r1.t = t
-    if not r2.goal_reached:
-        r2.t = t
+    
         
     
     
@@ -117,6 +119,9 @@ while not (r1.goal_reached and r2.goal_reached):
         print('Spacetime-2: ',new_path2)
         path1[r1.t+1:] = new_path1[1:]
         path2[r2.t+1:] = new_path2[1:]
+        
+        
+        
         
     if replan_flag:
         print('------Replanning---------')
