@@ -15,23 +15,31 @@ import numpy as np
 import time
 import copy
 
+
+mapid = 1
+
 #Case 1 : Path Clash
 # r1 = Robot(robotid = 1,mapid=1,start=[14,5],goal=[12,14])
 # r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,6])
 
-#Case 2 : Goal Block
-r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
-r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+# #Case 2 : Goal Block
+# r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
+# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
 
 # #Case 3 : Rnadom Location
-# r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
-# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+
+# #Case 4 : obstacle with map 2
+
+# r1 = Robot(robotid = 1,mapid=4,start=[12,18],goal=[12,6])
+# r2 = Robot(robotid = 2,mapid=4,start=[12,5],goal=[12,15])
 
 
 print('-----Plotting------')
 '''Maps plotting'''
 
-maze_map = maze_maps.maps_dictionary[1]
+maze_map = maze_maps.maps_dictionary[mapid]
 map_plot_copy = copy.deepcopy(maze_map.map_data)
 
 map_plot_copy[r1.start[0]][r1.start[1]] = maze_maps.start_id
