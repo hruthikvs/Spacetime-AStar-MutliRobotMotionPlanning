@@ -15,8 +15,8 @@ import numpy as np
 import time
 import copy
 
-r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
-r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,7])
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[12,15])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,5])
 # r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
 
 print('-----Plotting------')
@@ -72,14 +72,15 @@ while not (r1.goal_reached and r2.goal_reached):
         r2.start = list(path2[r2.t][:2])
         
         r1.getPath()
-        print('Spacetime1',r1.path_set)
+        
         
         r2.getPath(r1.path_set)
         
         new_path1 = r1.pathSpacetime
         new_path2 = r2.pathSpacetime
         
-        print('Spacetime2',new_path2)
+        print('Spacetime-1: ',new_path1)
+        print('Spacetime-2: ',new_path2)
         path1[r1.t+1:] = new_path1[1:]
         path2[r2.t+1:] = new_path2[1:]
         
