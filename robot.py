@@ -36,6 +36,8 @@ class Robot():
         self.path_set = set()
         
         self.occupied_path_set = occupied_path_set
+        self.goal_reached = False
+        self.t = 0
         # self.plot_map()
         
         
