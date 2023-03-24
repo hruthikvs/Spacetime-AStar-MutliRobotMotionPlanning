@@ -117,7 +117,7 @@ class Robot():
              new_action = action
              
              # Check for obstacle 
-             if (self.maze_map.map_data[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id or 
+             if (self.map_plot_copy[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id or 
              tuple(new_successor) in self.occupied_path_set) or tuple(new_successor_edge) in edge_set:
                  continue
               

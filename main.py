@@ -15,8 +15,8 @@ import numpy as np
 import time
 import copy
 
-r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[12,15])
-r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,5])
+r1 = Robot(robotid = 1,mapid=1,start=[14,6],goal=[9,8])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,6])
 # r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
 
 print('-----Plotting------')
@@ -56,12 +56,33 @@ T= 20
 
 while not (r1.goal_reached and r2.goal_reached):
     
+    if r1.isGoalState(list(path1[r1.t][:2])):
+        r1.goal_reached = True
+    if r2.isGoalState(list(path2[r2.t][:2])):
+        r2.goal_reached = True
+    
+    if not r1.goal_reached:
+        r1.t = t
+    if not r2.goal_reached:
+        r2.t = t
+        
+    if r1.goal_reached:
+        r2.map_plot_copy[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
+        plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
+        plt.imshow(r2.map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
+        plt.show()
+        r2.getPath()
+        new_path2 = r2.pathSpacetime
+        path2[r2.t+1:] = new_path2[1:]
+    
+    
     print('Robot 1 :',path1[r1.t][:2],'t=',r1.t if r1.t>r2.t else r2.t)
     print('Robot 2:',path2[r2.t][:2])
     
     
+    
      
-    if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0:
+    if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0 and not r1.goal_reached :
         
         print('------Robot reached Closeby--------')
         
@@ -96,15 +117,7 @@ while not (r1.goal_reached and r2.goal_reached):
     
     t+=1
      
-    if r1.isGoalState(list(path1[r1.t][:2])):
-        r1.goal_reached = True
-    if r2.isGoalState(list(path2[r2.t][:2])):
-        r2.goal_reached = True
     
-    if not r1.goal_reached:
-        r1.t = t
-    if not r2.goal_reached:
-        r2.t = t
     
 
 
