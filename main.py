@@ -97,7 +97,7 @@ while not (r1.goal_reached and r2.goal_reached):
     
     
      
-    if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0 and not r1.goal_reached :
+    if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0  :
         
         print('\n------Robot reached Closeby--------')
         
@@ -121,7 +121,21 @@ while not (r1.goal_reached and r2.goal_reached):
         path2[r2.t+1:] = new_path2[1:]
         
         
-        
+        if r1.isGoalState(list(path1[r1.t][:2])) and not r1.goal_reached:
+            r1.goal_reached = True
+            replan_flag = 1
+            'create obstacle in all maps at goal position'
+            r1.maze_map.map_data[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
+            r2.maze_map.map_data[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
+            
+            print('-----Robot1 Goal Reached------')
+            
+        if r2.isGoalState(list(path2[r2.t][:2])) and not r2.goal_reached:
+            r2.goal_reached = True
+            replan_flag = 1
+            r1.maze_map.map_data[r2.getGoalState()[0]][r2.getGoalState()[1]] = 16
+            r2.maze_map.map_data[r2.getGoalState()[0]][r2.getGoalState()[1]] = 16
+            print('-----Robot2 Goal Reached------')
         
     if replan_flag:
         print('------Replanning---------')

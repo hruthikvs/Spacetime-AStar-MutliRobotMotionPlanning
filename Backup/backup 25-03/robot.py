@@ -87,7 +87,18 @@ class Robot():
          successor to the current state, 'action' is the action
          required to get there, and 'stepCost' is the incremental 
          cost of expanding to that successor
+         
          """
+         
+         'To check edge collisions, creating edge_set'
+         blocl = list(self.occupied_path_set)
+         blocl.sort(key=lambda x:x[2])
+         edge_set = set()
+         for i in range(len(blocl)-1):
+             edge_set.add(((blocl[i][0]+blocl[i+1][0])/2,(blocl[i][1]+blocl[i+1][1])/2,blocl[i+1][2]))
+     
+         
+         
          
           #Update changes on the plot copy
          #TODO CHanges
@@ -103,11 +114,12 @@ class Robot():
              #Get successor
              #TODO
              new_successor = [state[0] + del_x , state[1] + del_y, state[2] + del_t ]
+             new_successor_edge = [state[0] + del_x/2 , state[1] + del_y/2, state[2] + del_t ]
              new_action = action
              
              # Check for obstacle 
-             if (self.maze_map.map_data[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id or 
-             tuple(new_successor) in self.occupied_path_set):
+             if (self.map_plot_copy[new_successor[0]][new_successor[1]] == maze_maps.obstacle_id or 
+             tuple(new_successor) in self.occupied_path_set) or tuple(new_successor_edge) in edge_set:
                  continue
               
              #Update changes on the plot copy
@@ -141,8 +153,8 @@ class Robot():
         if self.path:
             print('Robot %d: Found a path of %d moves: %s' % (self.robotid,len(self.path), str(self.path))) 
             #Display solution
-            row,col,time =  current_maze.getStartState() 
             
+            row,col,time =  current_maze.getStartState() 
             self.pathSpacetime.append((row,col,time))
             for action in self.path:
                 del_x, del_y, del_t = current_maze.four_neighbor_actions.get(action)
@@ -157,14 +169,13 @@ class Robot():
                 
                 self.pathSpacetime.append((row,col,time))
             
-            
+            self.path_set = set(self.pathSpacetime)
             
             #Plot the solution
             # current_maze.plot_map()
             
             return self.path
         else:
-            
             print("Could not find a path")
-            
-        self.path_set = set(self.pathSpacetime)
+            print(self.path)
+            self.path_set = set(self.pathSpacetime)
