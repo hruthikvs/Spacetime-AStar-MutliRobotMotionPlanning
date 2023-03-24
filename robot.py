@@ -90,6 +90,7 @@ class Robot():
          
          """
          
+         'To check edge collisions, creating edge_set'
          blocl = list(self.occupied_path_set)
          blocl.sort(key=lambda x:x[2])
          edge_set = set()

@@ -15,9 +15,18 @@ import numpy as np
 import time
 import copy
 
-r1 = Robot(robotid = 1,mapid=1,start=[14,6],goal=[9,8])
-r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,6])
-# r3 = Robot(mapid=1,start=[14,17],goal=[12,1])
+#Case 1 : Path Clash
+# r1 = Robot(robotid = 1,mapid=1,start=[14,5],goal=[12,14])
+# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,6])
+
+#Case 2 : Goal Block
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+
+#Case 3 : Rnadom Location
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
+r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+
 
 print('-----Plotting------')
 '''Maps plotting'''
@@ -54,26 +63,30 @@ r2.t = 0
 t=0
 T= 20
 
+replan_flag = 0
 while not (r1.goal_reached and r2.goal_reached):
     
-    if r1.isGoalState(list(path1[r1.t][:2])):
+    if r1.isGoalState(list(path1[r1.t][:2])) and not r1.goal_reached:
         r1.goal_reached = True
-    if r2.isGoalState(list(path2[r2.t][:2])):
+        replan_flag = 1
+        'create obstacle in all maps at goal position'
+        r1.maze_map.map_data[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
+        r2.maze_map.map_data[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
+        
+        print('-----Robot1 Goal Reached------')
+        
+    if r2.isGoalState(list(path2[r2.t][:2])) and not r2.goal_reached:
         r2.goal_reached = True
+        replan_flag = 1
+        r1.maze_map.map_data[r2.getGoalState()[0]][r2.getGoalState()[1]] = 16
+        r2.maze_map.map_data[r2.getGoalState()[0]][r2.getGoalState()[1]] = 16
+        print('-----Robot2 Goal Reached------')
     
     if not r1.goal_reached:
         r1.t = t
     if not r2.goal_reached:
         r2.t = t
         
-    if r1.goal_reached:
-        r2.map_plot_copy[r1.getGoalState()[0]][r1.getGoalState()[1]] = 16
-        plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
-        plt.imshow(r2.map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
-        plt.show()
-        r2.getPath()
-        new_path2 = r2.pathSpacetime
-        path2[r2.t+1:] = new_path2[1:]
     
     
     print('Robot 1 :',path1[r1.t][:2],'t=',r1.t if r1.t>r2.t else r2.t)
@@ -84,7 +97,7 @@ while not (r1.goal_reached and r2.goal_reached):
      
     if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0 and not r1.goal_reached :
         
-        print('------Robot reached Closeby--------')
+        print('\n------Robot reached Closeby--------')
         
         #update start of robots
         
@@ -105,12 +118,38 @@ while not (r1.goal_reached and r2.goal_reached):
         path1[r1.t+1:] = new_path1[1:]
         path2[r2.t+1:] = new_path2[1:]
         
+    if replan_flag:
+        print('------Replanning---------')
+        r1.start = list(path1[r1.t][:2])
+        r2.start = list(path2[r2.t][:2])
+        
+        r1.getPath()
+    
+        r2.getPath(r1.path_set)
+        
+        new_path1 = r1.pathSpacetime
+        new_path2 = r2.pathSpacetime
+        
+        print('Spacetime-1: ',new_path1)
+        print('Spacetime-2: ',new_path2)
+        path1[r1.t+1:] = new_path1[1:]
+        path2[r2.t+1:] = new_path2[1:]
+        
+        replan_flag = 0
+        
+        
+        
+        
     time.sleep(0.3 )
     
     '''Maps plotting'''
-    map_plot_copy[path1[r1.t][0]][path1[r1.t][1]] = 13
-    map_plot_copy[path2[r2.t][0]][path2[r2.t][1]] = 10
-     
+    if t>0:
+        #Robot trail
+        map_plot_copy[path1[r1.t-1][0]][path1[r1.t-1][1]] = 2
+        map_plot_copy[path2[r2.t-1][0]][path2[r2.t-1][1]] = 6
+    
+    map_plot_copy[path1[r1.t][0]][path1[r1.t][1]] = 0
+    map_plot_copy[path2[r2.t][0]][path2[r2.t][1]] = 4  
     plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
     plt.imshow(map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
     plt.show()
