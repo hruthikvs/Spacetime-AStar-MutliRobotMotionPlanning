@@ -23,14 +23,14 @@ mapid = 1
 # r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,6])
 
 # #Case 2 : Goal Block
-# r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
-# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
-
-# #Case 3 : Rnadom Location
-r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
+r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
 r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
 
-# #Case 4 : obstacle with map 2
+# #Case 3 : Rnadom Location
+# r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
+# r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
+
+# #Case 4 : obstacle with map 4
 
 # r1 = Robot(robotid = 1,mapid=4,start=[12,18],goal=[12,6])
 # r2 = Robot(robotid = 2,mapid=4,start=[12,5],goal=[12,15])
@@ -108,7 +108,7 @@ while not (r1.goal_reached and r2.goal_reached):
     if np.linalg.norm(np.array(path1[r1.t])-np.array(path2[r2.t]))<=2.0  :
         
         print('\n------Robot reached Closeby--------')
-        
+        time.sleep(1)
         #update start of robots
         
             
@@ -173,7 +173,10 @@ while not (r1.goal_reached and r2.goal_reached):
     if t>0:
         #Robot trail
         map_plot_copy[path1[r1.t-1][0]][path1[r1.t-1][1]] = 2
-        map_plot_copy[path2[r2.t-1][0]][path2[r2.t-1][1]] = 6
+        map_plot_copy[path2[r2.t-1][0]][path2[r2.t-1][1]] = 7
+        
+    
+        
     
     map_plot_copy[path1[r1.t][0]][path1[r1.t][1]] = 0
     map_plot_copy[path2[r2.t][0]][path2[r2.t][1]] = 4  
@@ -181,6 +184,22 @@ while not (r1.goal_reached and r2.goal_reached):
     plt.imshow(map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
     plt.show()
     
+    
+    'Plotting Path to goal'
+    if False:   
+        path_map_plot_copy = copy.deepcopy(map_plot_copy)
+        for ele in path1[r1.t+1:]:
+            path_map_plot_copy[ele[0]][ele[1]] = 12
+        for ele in path2[r2.t+1:]:
+            path_map_plot_copy[ele[0]][ele[1]] = 9
+        
+        path_map_plot_copy[path1[r1.t][0]][path1[r1.t][1]] = 0
+        path_map_plot_copy[path2[r2.t][0]][path2[r2.t][1]] = 4  
+        plot_colormap_norm = matplotlib.colors.Normalize(vmin=0.0, vmax=19.0)
+        plt.imshow(path_map_plot_copy, cmap=plt.cm.tab20c, norm= plot_colormap_norm)
+        plt.show()  
+        
+        
     t+=1
      
     
