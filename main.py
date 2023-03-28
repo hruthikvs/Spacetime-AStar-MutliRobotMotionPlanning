@@ -23,6 +23,7 @@ mapid = 1
 # r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[12,6])
 
 # #Case 2 : Goal Block
+
 r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[9,8])
 r2 = Robot(robotid = 2,mapid=1,start=[14,18],goal=[9,5])
 

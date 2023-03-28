@@ -14,7 +14,8 @@ import search
 class Robot():
     
     
-    four_neighbor_actions = {'stay':[0, 0, 1],'up':[-1, 0, 1], 'down':[1, 0, 1], 'left': [0, -1, 1], 'right': [0, 1, 1]}
+    four_neighbor_actions = {'stay':[0, 0, 1],'up':[-1, 0, 1], 'down':[1, 0, 1], 
+                             'left': [0, -1, 1], 'right': [0, 1, 1]}
   
     #Setup plot
     map_plot_copy = []
