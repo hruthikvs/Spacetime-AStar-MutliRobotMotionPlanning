@@ -76,14 +76,15 @@ class Pioneer:
     pioneer_left_motor_handle = None
     pioneer_right_motor_handle = None
     
-    #state variables 
+    #state variables
+   
     goal_state = [0.0, 0.0] #x,y position
     current_state = [0.0, 0.0, 0.0] #x,y position and theta orientation
     
     robot_control = control.Go_to_goal_controller()
     
     # default constructor
-    def __init__(self, id):
+    def __init__(self, id, start):
         """
         Sets up the pioneer
         """
@@ -91,6 +92,10 @@ class Pioneer:
         self.name = "/Pioneer"+str(id)
         self.get_handles() 
         self.setvel_pioneer(0.0, 0.0)
+        
+        #TODO
+        self.start_state = [start[0], start[1]]
+        self.spawn_at_start()
         
         return        
 
@@ -127,6 +132,14 @@ class Pioneer:
       
         self.current_state = [x, y, theta]
         return 
+    #TODO
+    def spawn_at_start(self):
+        print("Spawning Robot at : ", self.start_state)
+        res , pioneer_Position = sim.simxGetObjectPosition(client_ID, self.pioneer_handle, -1 , sim.simx_opmode_buffer)
+        start = [self.start_state[0], self.start_state[1], pioneer_Position[2]]
+        sim.simxSetObjectPosition(client_ID, self.pioneer_handle, -1, start, sim.simx_opmode_oneshot)
+        time.sleep(0.5)
+        
     
     def setvel_pioneer(self, V, W):
         #Function to set the linear and rotational velocity of pioneers

@@ -17,9 +17,11 @@ import numpy as np
 import time
 import copy
 
-
+from sim_interface import Pioneer
 
 mapid = 1
+
+
 
 #Case 1 : Path Clash
 # r1 = Robot(robotid = 1,mapid=1,start=[14,5],goal=[12,14])
@@ -29,6 +31,7 @@ mapid = 1
 
 r1 = Robot(robotid = 1,mapid=1,start=[1,1],goal=[5,6])
 r2 = Robot(robotid = 2,mapid=1,start=[6,1],goal=[9,5])
+
 
 # #Case 3 : Rnadom Location
 # r1 = Robot(robotid = 1,mapid=1,start=[14,4],goal=[4,17])
@@ -212,7 +215,8 @@ while not (r1.goal_reached and r2.goal_reached):
     t+=1
      
 #TODO
-robot_move.RobotMove(x1, x2, x3)    
+robot_move.RobotMove(x1, x2, x3)  
+robot_move.EndStop(x1, x2, x3)  
 
 
 
