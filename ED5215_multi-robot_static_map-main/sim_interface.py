@@ -84,7 +84,7 @@ class Pioneer:
     robot_control = control.Go_to_goal_controller()
     
     # default constructor
-    def __init__(self, id, start):
+    def __init__(self, id):
         """
         Sets up the pioneer
         """
@@ -94,8 +94,9 @@ class Pioneer:
         self.setvel_pioneer(0.0, 0.0)
         
         #TODO
-        self.start_state = [start[0], start[1]]
-        self.spawn_at_start()
+        self.start_state = [0,0]
+        
+        
         
         return        
 
@@ -127,13 +128,14 @@ class Pioneer:
       
         x = pioneer_Position[0]
         y = pioneer_Position[1]
-        theta  =pioneer_Orientation[2]
+        theta  = pioneer_Orientation[2]
         #print("robot", x,y,theta)
       
         self.current_state = [x, y, theta]
         return 
     #TODO
-    def spawn_at_start(self):
+    def spawn_at_start(self,x):
+        self.start_state = [x[0]-0.5,x[1]-0.5]
         print("Spawning Robot at : ", self.start_state)
         res , pioneer_Position = sim.simxGetObjectPosition(client_ID, self.pioneer_handle, -1 , sim.simx_opmode_buffer)
         start = [self.start_state[0], self.start_state[1], pioneer_Position[2]]
@@ -176,7 +178,7 @@ class Pioneer:
             #Run control loop 
             V, W = self.robot_control.gtg(self.current_state, self.goal_state)
             self.setvel_pioneer(V, W)
-            time.sleep(0.5)
+            # time.sleep(0.5)
         else:
             #Stop robot
             print("Reached local goal")

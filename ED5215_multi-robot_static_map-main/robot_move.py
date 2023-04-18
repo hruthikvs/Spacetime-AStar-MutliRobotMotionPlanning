@@ -13,11 +13,20 @@ import time
 import sim_interface
 
 sim_interface.sim_init()
+ 
 
 #Create three robot and setup interface for all three 
-robot1 = sim_interface.Pioneer(1, [1,1])
-robot2 = sim_interface.Pioneer(2, [6,1])
-robot3 = sim_interface.Pioneer(3, [5,1])
+
+robot1 = sim_interface.Pioneer(1)
+robot2 = sim_interface.Pioneer(2)
+robot3 = sim_interface.Pioneer(3)
+
+
+def set_at_start(x1,x2,x3):
+    robot1.spawn_at_start(x1)
+    robot2.spawn_at_start(x2)
+    robot3.spawn_at_start(x3)
+
          
 def RobotMove(x1,x2,x3):
     if (True):
@@ -25,7 +34,8 @@ def RobotMove(x1,x2,x3):
         
         
         #Start simulation
-        if (sim_interface.start_simulation()):
+        
+        if (True):
             
             robot1.goal_state = [x1[0] - 0.5 , x1[1] - 0.5]
             robot2.goal_state = [x2[0] - 0.5 , x2[1] - 0.5]
@@ -54,7 +64,8 @@ def EndStop(x1, x2, x3):
     robot1.run_controller()
     robot2.run_controller()
     robot3.run_controller()
-    
+
+
 
 #run
 if __name__ == '__main__':

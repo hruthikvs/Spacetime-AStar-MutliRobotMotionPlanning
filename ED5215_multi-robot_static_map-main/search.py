@@ -12,6 +12,7 @@ Implement your search algorithsm here
 """
 
 import operator
+import math
 
 def depthFirstSearch(problem):
     """
@@ -81,9 +82,6 @@ def breadthFirstSearch(problem):
     Strategy: Search the shallowest nodes in the search tree first.
     """
     "*** YOUR CODE HERE ***"
-    
-    
-    
     fringe = []
     close = []
     parent = {}
@@ -136,9 +134,7 @@ def breadthFirstSearch(problem):
     yline = [x[1] for x,_ in  reversed(res_2)]
     zline = [x[2] for x,_ in  reversed(res_2)]
     
-    
-    
-    
+   
     #TODO
     # ax = plt.axes(projection='3d')
     # ax.plot3D(xline, yline, zline, 'red' , linewidth=10)
@@ -206,4 +202,67 @@ def uniformCostSearch(problem):
     RES = [i for i in reversed(res)]
     
     return RES
-  
+def heuristic_1(problem, state):
+    """
+    Euclidean distance
+    """
+    "*** YOUR CODE HERE ***"
+    #implimentation for calculating eulcidean distance to goal
+    goal_state = problem.getGoalState()
+    h = math.sqrt((goal_state[0]-state[0][0])**2+(goal_state[1]-state[0][1])**2)
+    return h
+
+def heuristic_2(problem, state):
+    """
+    Manhattan distance
+    """
+    "*** YOUR CODE HERE ***"
+    #implimentation for calculating manhattan distance to goal
+    goal_state = problem.getGoalState()
+    h = abs(goal_state[0]-state[0][0])+abs(goal_state[1]-state[0][1])
+    return h
+
+def aStarSearch(problem):
+    #print(curr_state)
+    Fringe = []
+    Closed = []
+    FC = {}
+    Nodes_expanded = 0
+    Fringe.append(problem.getStartState())
+    if (len(problem.getStartState())==2):
+        Fringe[0].append(0)
+    Nodes_expanded = Nodes_expanded +1
+    curr_state = problem.getStartState()
+    FC[tuple(curr_state)] = [[],'Start',0,0]
+    Found_Path = 1
+    Nodes_expanded = Nodes_expanded +1
+    while (problem.isGoalState(Fringe[0][0:2])==0):
+        
+        curr_state = Fringe[0]
+        print(curr_state)
+        Closed.append(Fringe.pop(0))
+        for st in problem.getSuccessors(curr_state):
+            heuristic = heuristic_2(problem, st)
+            if st[0] not in Closed :
+                if st[0] not in Fringe :
+                    FC[tuple(st[0])] = [curr_state,st[1],FC[tuple(curr_state)][2]+st[2],heuristic]
+                    Fringe.append(st[0])
+                else:
+                    if(FC[tuple(curr_state)][2]+st[2]+heuristic<FC[tuple(st[0])][2]+FC[tuple(st[0])][3]):
+                        FC[tuple(st[0])] = [curr_state,st[1],FC[tuple(curr_state)][2]+st[2],heuristic]
+                    else:
+                        continue
+        if(len(Fringe)==0):
+            Found_Path = 0
+            break
+        Nodes_expanded = Nodes_expanded +1
+        Fringe = sorted(Fringe,key=lambda x:FC[tuple(x)][2]+FC[tuple(x)][3])
+    Path = []
+    if(Found_Path):
+        curr = Fringe[0]
+        while (FC[tuple(curr)][1]!='Start'):
+            Path.append(FC[tuple(curr)][1])
+            curr = FC[tuple(curr)][0]
+        Path.reverse()
+    print("Number of Nodes Expanded: ",Nodes_expanded)
+    return Path

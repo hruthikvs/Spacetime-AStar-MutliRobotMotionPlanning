@@ -93,7 +93,9 @@ class Robot():
          
          'To check edge collisions, creating edge_set'
          blocl = list(self.occupied_path_set)
-         blocl.sort(key=lambda x:x[2])
+         
+         
+          
          edge_set = set()
          for i in range(len(blocl)-1):
              edge_set.add(((blocl[i][0]+blocl[i+1][0])/2,(blocl[i][1]+blocl[i+1][1])/2,blocl[i+1][2]))
@@ -147,7 +149,8 @@ class Robot():
         
         
         current_maze =  Robot(self.robotid, self.mapid, self.start, self.goal, occupied_path_set)
-        self.path = search.breadthFirstSearch(current_maze)
+        # self.path = search.breadthFirstSearch(current_maze)
+        self.path = search.aStarSearch(current_maze)
         
         self.pathSpacetime = []
         

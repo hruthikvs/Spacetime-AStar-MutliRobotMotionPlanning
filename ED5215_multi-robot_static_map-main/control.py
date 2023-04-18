@@ -55,6 +55,7 @@ class Go_to_goal_controller:
         
         #TODO
         #control input for linear velocity 
+        #V = (0.12/1.5)*(np.arctan(d - distThresh)**0.1)
         #V = (0.12/1.5)*(np.arctan(d - distThresh))
         if self.at_goal(robot_state, goal_state):
             V = 0
